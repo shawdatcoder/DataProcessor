@@ -13,7 +13,7 @@ namespace DataProcessor
     class Program
     {
         public static MemoryCache FilesToProcess = MemoryCache.Default;
-        //private static ConcurrentDictionary<string, string> FilesToProcess = new ConcurrentDictionary<string, string>();
+
         static void Main(string[] args)
         {
             Console.WriteLine("EXECUTING COMMAND LINE ARGUMENTS args[0] ");
@@ -28,7 +28,6 @@ namespace DataProcessor
             {
                 Console.WriteLine($"WATCHING: {directoryToWatch} for changes");
                 using (var inputFileWatcher = new FileSystemWatcher(directoryToWatch))
-                //   using(var timer = new Timer(ProcessFiles, null, 0, 1000))
                 {
                     //does not watch for chanages in the sub dirs
                     inputFileWatcher.IncludeSubdirectories = false;
@@ -53,28 +52,6 @@ namespace DataProcessor
             }
 
 
-            /*command manual way */
-            //var command = args[0];
-
-
-            //if( command ==  "--file")
-            //{
-            //    var filepath = args[1];
-            //    Console.WriteLine($"Single file  {filepath} path selected");
-            //    ProcessSingleFile(filepath);
-
-            //}
-            //else if (command == "--dir")
-            //{
-            //    var dirpath = args[1];
-            //    var fileType = args[2];
-            //    Console.WriteLine($"Directory path {dirpath} selected for {fileType} files");
-            //    ProcessDirectory(dirpath, fileType);
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Invalid command line options");
-            //}
 
 
 
@@ -99,18 +76,12 @@ namespace DataProcessor
         private static void InputFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine($"File Changed: {e.Name} - type {e.ChangeType}: {DateTime.Now}");
-            //var fileProcessor = new FileProcessor(e.FullPath);
-            //fileProcessor.Process();
-            // FilesToProcess.TryAdd(e.FullPath, e.FullPath);
             AddToCache(e.FullPath);
         }
 
         private static void InputFileWatcher_Created(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine($"File Created: {e.Name} - type {e.ChangeType}: {DateTime.Now}");
-            //var fileProcessor = new FileProcessor(e.FullPath);
-            //fileProcessor.Process();
-            // FilesToProcess.TryAdd(e.FullPath, e.FullPath);
             AddToCache(e.FullPath);
         }
 
@@ -151,17 +122,6 @@ namespace DataProcessor
             }
         }
 
-        //private static void ProcessFiles(Object stateInfo)
-        //{
-        //    foreach (var fileName in FilesToProcess.Keys)
-        //    {
-        //        if(FilesToProcess.TryRemove(fileName, out _))
-        //        {
-        //            var fileProcessor = new FileProcessor(fileName);
-        //            fileProcessor.Process();
-        //        }
-        //    }
-        //}
 
         private static void ProcessSingleFile(string filepath)
         {

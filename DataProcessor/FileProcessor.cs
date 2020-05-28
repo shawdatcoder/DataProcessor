@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using static System.Console;
 
 namespace DataProcessor
 {
@@ -55,30 +56,16 @@ namespace DataProcessor
 
             if (File.Exists(inProgressFilePath))
             {
-                Console.WriteLine($"ERROR: File with name {inProgressFilePath} already being processed!");
+               WriteLine($"ERROR: File with name {inProgressFilePath} already being processed!");
             }
 
-            Console.WriteLine($"Moving {InputFilePath} to {inProgressFilePath}");
+            WriteLine($"Moving {InputFilePath} to {inProgressFilePath}");
             File.Move(InputFilePath, inProgressFilePath);
 
 
 
             //Determine the extension of the File
             string extension = Path.GetExtension(InputFilePath);
-
-
-            //swithcing based on ext
-            switch (extension)
-            {
-                case ".txt":
-                    ProcessTextFile(inProgressFilePath);
-                    break;
-
-                default:
-                    Console.WriteLine($"{extension} is not supported");
-                    break;
-
-            }
 
 
             string completedDirectoryPath = Path.Combine(rootDirectoryPath, CompletedDirectoryName);
@@ -89,22 +76,36 @@ namespace DataProcessor
             //change the extension
             //completedFileName = Path.ChangeExtension(completedFileName, ".complete");
             var completedFilePath = Path.Combine(completedDirectoryPath, completedFileName);
-           
-           
-
-            File.Move(inProgressFilePath, completedFilePath);
-            Console.WriteLine($"Processing Completed of {completedFilePath}");
 
 
-            //clean up processing dir
-            //string inProgressDirectoryPath = Path.GetDirectoryName(inProgressFilePath);
-            //Directory.Delete(inProgressDirectoryPath, true);
+
+
+            //swithcing based on ext
+            switch (extension)
+            {
+                case ".txt":
+                    var textFileProcessor = new TextFileProcessor(inProgressFilePath, completedFilePath);
+                    textFileProcessor.Process();
+                    break;
+
+                default:
+                    WriteLine($"{extension} is not supported");
+                    break;
+
+            }
+
+
+
+            //File.Move(inProgressFilePath, completedFilePath);
+            //Console.WriteLine($"Processing Completed of {completedFilePath}");
+
+
+            WriteLine($"Completed the processing of {inProgressFilePath}");
+            WriteLine($"Deleting {inProgressFilePath}");
+            File.Delete(inProgressFilePath);
 
         }
 
-        private void ProcessTextFile(string inProgressFilePath)
-        {
-            Console.WriteLine($"Processing textfile : {inProgressFilePath}");
-        }
+       
     }
 }

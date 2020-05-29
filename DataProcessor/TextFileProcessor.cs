@@ -21,13 +21,23 @@ namespace DataProcessor
 
         public void Process()
         {
-            //using readAllText
-            //putting file into memory
-            string originalText = File.ReadAllText(InputFilePath);
-            string processedText = originalText.ToUpperInvariant();
+            ////using readAllText
+            ////putting file into memory
+            //string originalText = File.ReadAllText(InputFilePath);
+            //string processedText = originalText.ToUpperInvariant();
 
-            //Write out the memory into a file
-            File.WriteAllText(OutputFilePath, processedText);
+            ////Write out the memory into a file
+            //File.WriteAllText(OutputFilePath, processedText);
+
+            //using readAllLines
+            string[] lines = File.ReadAllLines(InputFilePath);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if(i%2 ==  0 )
+                lines[i] = lines[i].ToUpperInvariant();
+            }
+            //this always places a newline at the end of processing
+            File.WriteAllLines(OutputFilePath, lines);
         }
     }
 }

@@ -88,6 +88,12 @@ namespace DataProcessor
                     textFileProcessor.Process();
                     break;
 
+                case ".data":
+                    var binaryFileProcessor = new BinaryFileProcessor(inProgressFilePath, completedFilePath);
+                    binaryFileProcessor.Process();
+                    break;
+
+
                 default:
                     WriteLine($"{extension} is not supported");
                     break;
